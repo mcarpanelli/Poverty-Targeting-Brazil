@@ -13,8 +13,8 @@ def logit(X_train, y_train, X_test):
 
 def RF(X_train, y_train,X_test):
     parameters = {'class_weight':['balanced', None],
-                'max_depth': [5,7,8,9,10],
-                'max_features': [7,8,9]
+                'max_depth': [10,12,14],
+                'max_features': [9,11,13]
                 }
     gscv = GridSearchCV(RandomForestClassifier(), parameters)
     fit = gscv.fit(X_train, y_train)
@@ -23,8 +23,8 @@ def RF(X_train, y_train,X_test):
     return y_hat_RF
 
 def GBC(X_train, y_train,X_test):
-    parameters = {'learning_rate':[0.2, 0.1],
-                    'n_estimators':  [200,300]
+    parameters = {'learning_rate':[0.1],
+                    'n_estimators':  [300,400]
                     }
     decisionTree = GradientBoostingClassifier()
     gscv = GridSearchCV(decisionTree, parameters,scoring = 'roc_auc')
@@ -34,8 +34,8 @@ def GBC(X_train, y_train,X_test):
     return y_hat_GBC
 
 def ABC(X_train, y_train,X_test):
-    parameters = {'learning_rate':[0.2, 0.1],
-                    'n_estimators':  [200,300]
+    parameters = {'learning_rate':[0.1],
+                    'n_estimators':  [200,150]
                     }
     decisionTree = AdaBoostClassifier(DecisionTreeClassifier(max_depth=3))
     gscv = GridSearchCV(decisionTree, parameters,scoring = 'roc_auc')
@@ -49,7 +49,7 @@ def GBC_Logit(X_train,y_train,X_test):
     X_train, X_train_lr, y_train, y_train_lr = train_test_split(X_train,
                                                             y_train,
                                                             test_size=0.5)
-    grd = GradientBoostingClassifier(n_estimators=200,learning_rate=0.5)
+    grd = GradientBoostingClassifier(n_estimators=200,learning_rate=0.1)
     grd_enc = OneHotEncoder()
     grd_lm = LogisticRegression()
     grd.fit(X_train, y_train)
@@ -63,7 +63,7 @@ def RF_Logit(X_train,y_train,X_test):
     X_train, X_train_lr, y_train, y_train_lr = train_test_split(X_train,
                                                             y_train,
                                                             test_size=0.5)
-    grd = RandomForestClassifier(max_depth=4,max_features=5)
+    grd = RandomForestClassifier(max_depth=10,max_features=9)
     grd_enc = OneHotEncoder()
     grd_lm = LogisticRegression()
     grd.fit(X_train, y_train)
